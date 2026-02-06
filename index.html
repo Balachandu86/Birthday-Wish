@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Happy Birthday ❤️</title>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+        <style>
+            body{
+                margin:0;
+                font-family: 'Poppins', sans-serif;
+                color:white;
+                text-align:center;
+                overflow-x:hidden;
+
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                min-height:100vh;
+
+                background: linear-gradient(-45deg,#ff758c,#ff7eb3,#ff9aa2,#fad0c4);
+                background-size: 400% 400%;
+                animation: gradient 12s ease infinite;
+            }
+
+            h1{
+                font-family: 'Dancing Script', cursive;
+                font-size:48px;
+            }
+
+            @keyframes gradient{
+                0%{background-position:0% 50%}
+                50%{background-position:100% 50%}
+                100%{background-position:0% 50%}
+            }
+
+            .container{
+                padding:40px 18px;
+                max-width:900px;
+                width:100%;
+                animation: fadeSlide 1.2s ease;
+            }
+
+            @keyframes fadeSlide{
+                from{
+                    opacity:0;
+                    transform: translateY(30px);
+                }
+                to{
+                    opacity:1;
+                    transform: translateY(0);
+                }
+            }
+
+            button{
+                padding:14px 26px;
+                font-size:18px;
+                border:none;
+                border-radius:14px;
+                background:white;
+                color:#ff4d6d;
+                cursor:pointer;
+                margin-top:15px;
+                transition: 0.3s;
+            }
+
+            button:hover{
+                box-shadow:0 0 18px rgba(255,255,255,0.9);
+                transform: scale(1.05);
+            }
+
+            #clock{
+                display:block;         
+                margin-top:15px;
+                font-size:20px;
+                background: rgba(255,255,255,0.15);
+                padding:8px 16px;
+                border-radius:10px;
+                width:fit-content;
+                margin-left:auto;
+                margin-right:auto;      
+            }
+
+            .note{
+                display:none;
+                margin-top:22px;
+                font-size:20px;
+            }
+
+            .particle{
+                position:fixed;
+                width:6px;
+                height:6px;
+                background:white;
+                border-radius:50%;
+                opacity:0.6;
+                animation: floatParticle linear infinite;
+            }
+
+            @keyframes floatParticle{
+                from{
+                    transform:translateY(0);
+                    opacity:0;
+                }
+                to{
+                    transform:translateY(-120vh);
+                    opacity:1;
+                }
+            }
+
+            @media (max-width:600px){
+
+                h1{ font-size:32px; }
+
+                p{ font-size:16px; }
+
+                button{
+                    width:90%;
+                    font-size:16px;
+                }
+
+                audio{ width:90%; }
+
+                .note{ font-size:18px; }
+
+            }
+        </style>
+
+        <script>
+            const msg="Celebrating you today and all the joy you bring. I’m really glad to have you in my life. Wishing you a wonderful birthday filled with smiles and happiness.";
+            let idx=0;
+            function typeText(){
+                if(idx<msg.length){
+                    document.getElementById("typing").innerHTML+=msg.charAt(idx);
+                    idx++;
+                    setTimeout(typeText,35);
+                }
+            }
+
+            function showNote(){
+                document.getElementById("loveNote").style.display="block";
+            }
+
+            function fireworks(){
+                let end=Date.now()+2000;
+                (function frame(){
+                    confetti({
+                        particleCount:6,
+                        spread:70,
+                        angle:Math.random()*360,
+                        origin:{x:Math.random(),y:Math.random()-0.2}
+                    });
+                    if(Date.now()<end){
+                        requestAnimationFrame(frame);
+                    }
+                })();
+            }
+
+            function updateDateTime(){
+                const now=new Date();
+                const date=now.toLocaleDateString(undefined,{
+                    weekday:'long', year:'numeric', month:'long', day:'numeric'
+                });
+                const time=now.toLocaleTimeString();
+                document.getElementById("clock").innerText=date+" | "+time;
+            }
+            setInterval(updateDateTime,1000);
+
+            function particle(){
+                const p=document.createElement("div");
+                p.className="particle";
+                p.style.left=Math.random()*100+"vw";
+                p.style.animationDuration=(6+Math.random()*6)+"s";
+                document.body.appendChild(p);
+                setTimeout(()=>p.remove(),10000);
+            }
+            setInterval(particle,100);
+
+            let clicks=0;
+            function secret(){
+                clicks++;
+                if(clicks==5){
+                    alert("🎁 Small Gift: Ilysm <3!");
+                }
+            }
+
+            window.onload=typeText;
+
+            document.addEventListener("click", function(){
+                const music=document.getElementById("bgMusic");
+                if(music && music.paused){
+                    music.play().catch(()=>{});
+                }
+            }, {once:true});
+
+            const name ="Praneetha";
+
+            document.getElementById("title").innerText =
+                "Happy Birthday " + name + " ❤️";
+        </script>
+    </head>
+
+    <body>
+
+        <div class="container">
+
+            <h1 onclick="secret()" id="title">Happy Birthday Praneetha ❤️</h1>
+            
+            <p id="typing"></p>
+            
+            <button onclick="showNote()">Open 💌</button>
+            
+            <div id="loveNote" class="note">
+                Here’s to more smiles, adventures,  
+                and good times together.  
+                Happy Birthday!
+            </div>
+        
+            <div id="clock"></div>
+        
+            <br>
+        
+            <button onclick="fireworks()">Celebrate 🎆</button>
+        
+            <audio id="bgMusic" loop>
+                <source src="Nagumo.mp3" type="audio/mpeg">
+            </audio>
+
+        </div>
+
+    </body>
+</html>
